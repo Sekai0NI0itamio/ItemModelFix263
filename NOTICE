@@ -1,6 +1,6 @@
 NOTICE
 
-Item Model Fix (Itamio port for Minecraft 26.3)
+Item Model Fix (Itamio port for Minecraft 1.20.1)
 
 This mod is an unofficial port of "Item Model Fix" by PepperCode1
 (https://github.com/PepperCode1/Item-Model-Fix, LGPL-3.0-only),
@@ -8,19 +8,17 @@ originally for Minecraft 1.19.2 (Fabric).
 
 All credit for the original concept, design, and logic goes to
 PepperCode1. This port was created by Itamio to bring the mod to
-Minecraft 26.3 (Fabric) because the original has not been updated
+Minecraft 1.20.1 (Forge) because the original has not been updated
 to this version.
 
 Itamio does not take credit for any of the original assets or logic.
-The code was updated to be compatible with Minecraft 26.3 (Fabric).
+The code was updated to be compatible with Minecraft 1.20.1 (Forge).
 
-Port status: the original mod hooked the old baked-model
-ItemModelGenerator (ModelElement-based). That generator was removed
-in 26.3's new cuboid model system
-(net.minecraft.client.resources.model.cuboid.ItemModelGenerator,
-which bakes QuadCollections instead of ModelElements), so the
-original outline/pixel/unlerp generation modes cannot be ported
-mechanically. This port ships the original config, generation-type
-enum, and UV/pixel utilities (MathUtil, PixelDirection) and loads
-on 26.3; reimplementing the generation modes against the new
-QuadCollection baking pipeline is future work, documented in README.
+Port status: full port. On 1.20.1 the old baked-model
+ItemModelGenerator
+(net.minecraft.client.renderer.block.model.ItemModelGenerator) still
+exists, so the complete original generation logic (VANILLA / UNLERP /
+OUTLINE / PIXEL) is ported, hooked via a Mixin on
+ItemModelGenerator.processFrames. The 26.3 (main) branch cannot do
+this because that generator was removed in 26.3's new cuboid model
+system — see that branch's README/NOTICE.
