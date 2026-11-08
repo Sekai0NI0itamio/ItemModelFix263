@@ -2,51 +2,54 @@ package itamio.itemmodelfix.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import itamio.itemmodelfix.ItemModelFix;
 import itamio.itemmodelfix.model.ItemModelGenerationType;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import net.fabricmc.loader.api.FabricLoader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+/**
+ * Simple JSON config (no Cloth Config / ModMenu dependency).
+ * File: config/itemmodelfix263.json, field "generationType".
+ */
 public class Config {
-    private static final Logger LOGGER = LoggerFactory.getLogger("ItemModelFix263");
-    private static Config instance;
+	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+	private static Config instance;
 
-    public ItemModelGenerationType generationType = ItemModelGenerationType.VANILLA;
+	public ItemModelGenerationType generationType = ItemModelGenerationType.OUTLINE;
 
-    public static Config get() {
-        if (instance == null) {
-            load();
-        }
-        return instance;
-    }
+	public static Config get() {
+		if (instance == null) {
+			load();
+		}
+		return instance;
+	}
 
-    public static void load() {
-        Path file = FabricLoader.getInstance().getConfigDir().resolve("itemmodelfix263.json");
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        Config config = new Config();
-        if (Files.exists(file)) {
-            try (Reader reader = Files.newBufferedReader(file)) {
-                Config loaded = gson.fromJson(reader, Config.class);
-                if (loaded != null) {
-                    config = loaded;
-                }
-            } catch (IOException | RuntimeException e) {
-                LOGGER.warn("Failed to load config, using defaults", e);
-            }
-        }
-        instance = config;
-        try {
-            Files.createDirectories(file.getParent());
-            try (Writer writer = Files.newBufferedWriter(file)) {
-                gson.toJson(config, writer);
-            }
-        } catch (IOException e) {
-            LOGGER.warn("Failed to write config", e);
-        }
-    }
+	public static void load() {
+		Path configPath = FabricLoader.getInstance().getConfigDir();
+		File file = new File(configPath.toFile(), "itemmodelfix263.json");
+		Config config = new Config();
+		if (file.exists()) {
+			try (FileReader reader = new FileReader(file)) {
+				Config loaded = GSON.fromJson(reader, Config.class);
+				if (loaded != null) {
+					config = loaded;
+				}
+			} catch (IOException | RuntimeException e) {
+				ItemModelFix.LOGGER.warn("Failed to load config, using defaults", e);
+			}
+		}
+		if (config.generationType == null) {
+			config.generationType = ItemModelGenerationType.OUTLINE;
+		}
+		instance = config;
+		try (FileWriter writer = new FileWriter(file)) {
+			writer.write(GSON.toJson(config));
+		} catch (IOException e) {
+			ItemModelFix.LOGGER.warn("Failed to write config", e);
+		}
+	}
 }

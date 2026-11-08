@@ -3,7 +3,7 @@
   "id": "itemmodelfix263",
   "version": "${version}",
   "name": "Item Model Fix",
-  "description": "Fixes gaps in generated item models. Unofficial 26.3 (Fabric) port of Item Model Fix by PepperCode1 (LGPL-3.0-only). See NOTICE for credit, README for port status.",
+  "description": "Fixes gaps in generated item models. Unofficial full port for Minecraft 1.20.1 (Fabric) of Item Model Fix by PepperCode1 (LGPL-3.0-only). See NOTICE for credit, README for port status.",
   "authors": ["Itamio", "PepperCode1"],
   "contact": {
     "homepage": "https://github.com/Sekai0NI0itamio/ItemModelFix263",
@@ -13,11 +13,13 @@
   "license": "LGPL-3.0-only",
   "environment": "client",
   "entrypoints": {
-    "main": ["itamio.itemmodelfix.ItemModelFix263"]
+    "main": ["itamio.itemmodelfix.ItemModelFix"]
   },
+  "mixins": ["itemmodelfix263.mixins.json"],
   "depends": {
-    "fabricloader": ">=0.20.1",
-    "minecraft": "~26.3",
-    "java": ">=25"
+    "fabricloader": ">=0.16.14",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+    "fabric-api": "*"
   }
 }
