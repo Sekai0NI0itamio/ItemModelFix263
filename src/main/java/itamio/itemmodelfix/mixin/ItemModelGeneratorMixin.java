@@ -16,9 +16,8 @@ import net.minecraft.client.util.SpriteIdentifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Operation;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.wrapoperation.WrapOperation;
 
 @Mixin(ItemModelGenerator.class)
 public class ItemModelGeneratorMixin {
@@ -36,11 +35,13 @@ public class ItemModelGeneratorMixin {
 		DELTAS.get().clear();
 	}
 
-	@WrapOperation(method = "create", at = @At(value = "INVOKE", target = "Ljava/util/function/Function;apply(Ljava/lang/Object;)Ljava/lang/Object;"))
-	private Sprite captureSprite(Function<SpriteIdentifier, Sprite> function, SpriteIdentifier id, Operation<Sprite> original) {
-		Sprite sprite = original.call(function, id);
-		DELTAS.get().put(sprite.getContents(), sprite.getAnimationFrameDelta());
-		return sprite;
+	@ModifyVariable(method = "create", argsOnly = true)
+	private Function<SpriteIdentifier, Sprite> wrapTextureGetter(Function<SpriteIdentifier, Sprite> original) {
+		return id -> {
+			Sprite sprite = original.apply(id);
+			DELTAS.get().put(sprite.getContents(), sprite.getAnimationFrameDelta());
+			return sprite;
+		};
 	}
 
 	@Inject(method = "create", at = @At("RETURN"))
