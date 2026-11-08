@@ -30,3 +30,9 @@ baked-model ItemModelGenerator still exists, so the original
 VANILLA/UNLERP/OUTLINE/PIXEL generation logic works there via the
 original ItemModelGeneratorMixin. Only the main (26.3) branch is a
 partial port, because 26.3 removed that generator.
+
+Branch note: the Fabric/1.21.1 branch is a FULL port — on 1.21.1 the old
+baked-model ItemModelGenerator still exists, so the original
+VANILLA/UNLERP/OUTLINE/PIXEL generation logic works there via the
+original ItemModelGeneratorMixin. Only the main (26.3) branch is a
+partial port, because 26.3 removed that generator.
