@@ -35,7 +35,7 @@ public class ItemModelGeneratorMixin {
 		DELTAS.get().clear();
 	}
 
-	@ModifyVariable(method = "create", argsOnly = true)
+	@ModifyVariable(method = "create", at = @At("HEAD"), argsOnly = true)
 	private Function<SpriteIdentifier, Sprite> wrapTextureGetter(Function<SpriteIdentifier, Sprite> original) {
 		return id -> {
 			Sprite sprite = original.apply(id);
