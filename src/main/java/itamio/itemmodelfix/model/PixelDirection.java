@@ -1,6 +1,6 @@
 package itamio.itemmodelfix.model;
 
-import net.minecraft.core.Direction;
+import net.minecraft.util.math.Direction;
 
 public enum PixelDirection {
 	LEFT(Direction.WEST, -1, 0),
